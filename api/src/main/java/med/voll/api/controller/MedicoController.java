@@ -34,10 +34,20 @@ public class MedicoController {
     // métodos .stream() e .toList removidos devido ao uso do Page, a conversão necessário do DadosListagemMedico é feita automaticamente
     //OBSERVAR NA REQUISIÇÃO QUE VAI TER INFORMAÇÕES NECESSÁRIAS PARA O FRONTEND.
     //A anotação @PagleableDefalut define a regra de ordenação por nome e apenas 10 cadastros por página na requisição
-    @GetMapping
+
+
+    /*@GetMapping
     public Page<DadosListagemMedico> listar(@PageableDefault(size=10, sort={"nome"}) Pageable paginacao){
 
         return repository.findAll(paginacao).map(DadosListagemMedico::new);
+    }
+    */
+
+    //novo método para listar apenas os médicos que estão ativos
+    @GetMapping
+    public Page<DadosListagemMedico> listar(@PageableDefault(size=10, sort={"nome"}) Pageable paginacao){
+
+        return repository.findAllByAtivoTrue(paginacao).map(DadosListagemMedico::new);
     }
 
     @PutMapping
@@ -45,6 +55,27 @@ public class MedicoController {
     public void atualizar(@RequestBody @Valid DadosAtualizaoMedico dados){
         //acessando o objeto no banco de dados pelo id
         var medico = repository.getReferenceById(dados.id());
+        //acessando o método da classe médico para atualizar os dados
         medico.atualizarInformacoes(dados);
    }
+/*
+   //MÉTODO PARA EXCLUIR DO BANCO.
+   @DeleteMapping("/{id}")
+   @Transactional
+   // anotação @pathvariable usada para informar o spring que o id é uma variável para acessar o id do objeto
+   public void excluir(@PathVariable Long id){
+        //linha usada para deletar o objeto do banco de dados
+        repository.deleteById(id);
+
+   }
+
+ */
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void excluir(@PathVariable Long id){
+        //acessando o objeto no banco de dados pelo id
+        var medico = repository.getReferenceById(id);
+        //acessando o método da classe médico para inativar o cadastro
+        medico.excluir();
+    }
 }

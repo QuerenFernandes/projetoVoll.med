@@ -1,4 +1,4 @@
-package med.voll.api.medico;
+package med.voll.api.domain.medico;
 
 //record criado porque nas solicatões de listagem, não eram necessárias todas as informações do cadastro
 public record DadosListagemMedico(

@@ -1,6 +1,6 @@
-package med.voll.api.medico;
+package med.voll.api.domain.medico;
 
-import med.voll.api.endereco.Endereco;
+import med.voll.api.domain.endereco.Endereco;
 
 //dto criado para que esses dados sejam passados como retorno na atualização do cadastro do médico.
 public record DadosDetalhamentoMedico(

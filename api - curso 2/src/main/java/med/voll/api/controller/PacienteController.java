@@ -1,14 +1,12 @@
 package med.voll.api.controller;
 
 import jakarta.validation.Valid;
-import med.voll.api.medico.DadosAtualizaoMedico;
-import med.voll.api.medico.DadosListagemMedico;
-import med.voll.api.medico.Medico;
-import med.voll.api.paciente.*;
+import med.voll.api.domain.paciente.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +42,14 @@ public class PacienteController {
 
     }
 
+    @GetMapping("/{id}")
+    @Transactional
+    //reponseentity é usado para fazer com que o retorno da requisição seja o correto
+    public ResponseEntity detalhar(@PathVariable Long id){
+        var paciente = repository.getReferenceById(id);
+        //no content cria o objeto e o build retorna o objeto criado
+        return ResponseEntity.ok(new DadosDetalhamentoPaciente(paciente));
+    }
 
 }
 

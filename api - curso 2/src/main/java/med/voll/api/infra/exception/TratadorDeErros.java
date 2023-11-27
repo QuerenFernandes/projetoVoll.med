@@ -1,4 +1,4 @@
-package med.voll.api.infra;
+package med.voll.api.infra.exception;
 //ESSA CLASSE EXCLUI A NECESSIDADE DE TER UM TRY CATCH DENTRO DAS CLASSES ISOLANDO A FUNCIONALIDADE
 
 import jakarta.persistence.EntityNotFoundException;

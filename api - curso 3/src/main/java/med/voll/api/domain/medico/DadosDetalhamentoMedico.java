@@ -2,7 +2,6 @@ package med.voll.api.domain.medico;
 
 import med.voll.api.domain.endereco.Endereco;
 
-//dto criado para que esses dados sejam passados como retorno na atualização do cadastro do médico.
 public record DadosDetalhamentoMedico(
         Long id,
         String nome,
@@ -10,15 +9,15 @@ public record DadosDetalhamentoMedico(
         String crm,
         String telefone,
         Especialidade especialidade,
-        Endereco endereco
-) {
-    public DadosDetalhamentoMedico(Medico medico){
+        Endereco endereco) {
+
+    public DadosDetalhamentoMedico(Medico medico) {
         this(
                 medico.getId(),
                 medico.getNome(),
-                medico.getTelefone(),
                 medico.getEmail(),
                 medico.getCrm(),
+                medico.getTelefone(),
                 medico.getEspecialidade(),
                 medico.getEndereco());
     }

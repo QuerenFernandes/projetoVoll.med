@@ -15,40 +15,28 @@ import java.time.ZoneOffset;
 @Service
 public class TokenService {
 
-    //anotação usada para informar ao spring que essa variável deve ler as informações do arquivo de config
     @Value("${api.security.token.secret}")
     private String secret;
 
-    private static final String ISSUER = "API Voll.med";
-
     public String gerarToken(Usuario usuario) {
-        //System.out.println(secret);
         try {
             var algoritmo = Algorithm.HMAC256(secret);
             return JWT.create()
-                    //"dono do token
-                    .withIssuer(ISSUER)
-                    //pessoa relacionada com o token
+                    .withIssuer("API Voll.med")
                     .withSubject(usuario.getLogin())
-                    //método para definir o tempo de expiração
                     .withExpiresAt(dataExpiracao())
-                    //guarda o id do usuário
-                    //.withClaim("id", usuario.getId())
                     .sign(algoritmo);
-        } catch (JWTCreationException exception) {
-            throw new RuntimeException("erro ao gerrar token jwt", exception);
-
+        } catch (JWTCreationException exception){
+            throw new RuntimeException("erro ao gerar token jwt", exception);
         }
     }
 
-    //método criado para verificar se o usuário está válido e devolver o usuário que está armazenado no token
-    public String getSubject(String tokenJWT){
+    public String getSubject(String tokenJWT) {
         try {
             var algoritmo = Algorithm.HMAC256(secret);
             return JWT.require(algoritmo)
-                    .withIssuer(ISSUER)
+                    .withIssuer("API Voll.med")
                     .build()
-                    //verifica se o token que está chegando está de acordo
                     .verify(tokenJWT)
                     .getSubject();
         } catch (JWTVerificationException exception) {
@@ -56,11 +44,8 @@ public class TokenService {
         }
     }
 
-
-    //método criado para validar o token para que o mesmo expire após 2h
     private Instant dataExpiracao() {
-        return LocalDateTime
-                .now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
-}
 
+}
